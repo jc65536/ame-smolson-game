@@ -1,26 +1,25 @@
 import java.awt.*;
-
 import javax.swing.*;
 import java.util.*;
 
 public class Scene extends JComponent {
 
-    final static int SCENE_WIDTH = 800;
-    final static int SCENE_HEIGHT = 512;
+    final static int WIDTH = 800;
+    final static int HEIGHT = 512;
 
-    Background background = new Background(this);
-    java.util.List<Entity> entityList = new ArrayList<>();
+    TileMap map = new TileMap(this);
+    java.util.List<Entity> entities = new ArrayList<>();
     KeyboardManager k;
 
-    Entity trackingEntity;
-    int offsetX, offsetY;
+    Entity trackingEntity;          // the entity that the camera will follow (mostly the player)
+    int offsetX, offsetY;           // camera offset in pixels from the top left corner of the map
 
     public Scene(KeyboardManager k) {
         this.k = k;
     }
 
     public void addEntity(Entity entity) {
-        entityList.add(entity);     // add to list for logic calculations
+        entities.add(entity);     // add to list for logic calculations
     }
 
     public void setTrackingEntity(Entity trackingEntity) {
@@ -30,30 +29,42 @@ public class Scene extends JComponent {
     public KeyboardManager getKeyboardManager() {
         return k;
     }
+    
+    public TileMap getMap() {
+        return map;
+    }
 
     @Override
     public Dimension getPreferredSize() {
-        return new Dimension(SCENE_WIDTH, SCENE_HEIGHT);
+        return new Dimension(WIDTH, HEIGHT);
+    }
+
+    public int translateX(int x) {
+        return x - offsetX;
     }
 
     public int translateX(double x) {
-        return (int) x - offsetX;
+        return translateX((int) x);
+    }
+
+    public int translateY(int y) {
+        return y - offsetY;
     }
 
     public int translateY(double y) {
-        return (int) y - offsetY;
+        return translateY((int) y);
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        offsetX = (int) Math.min(background.getWidth() - SCENE_WIDTH, Math.max(0, trackingEntity.getX() - SCENE_WIDTH / 2));
-        offsetY = (int) Math.min(background.getHeight() - SCENE_HEIGHT, Math.max(0, trackingEntity.getY() - SCENE_HEIGHT / 2));
+        offsetX = (int) Math.min(map.getWidth() - WIDTH, Math.max(0, trackingEntity.getX() - WIDTH / 2));
+        offsetY = (int) Math.min(map.getHeight() - HEIGHT, Math.max(0, trackingEntity.getY() - HEIGHT / 2));
 
         Graphics2D g2 = (Graphics2D) g;
-        background.update(g2);
-        for (Entity e : entityList) {
+        map.update(g2);
+        for (Entity e : entities) {
             e.update(g2);
         }
     }

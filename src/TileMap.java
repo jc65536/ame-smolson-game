@@ -1,29 +1,22 @@
+import javax.swing.*;
+
+import java.awt.*;
 import java.io.*;
 import java.util.*;
-import java.awt.image.*;
-import javax.imageio.*;
 
 public class TileMap {
 
-    public static final int TILE_SIZE = 32;
+    Scene scene;
+    java.util.List<java.util.List<Tile>> map;
+    int rows, cols;
 
-    static Map<Character, BufferedImage> charDict;
-
-    static {
+    public TileMap(Scene scene) {
+        this.scene = scene;
         try {
-            charDict = Map.of('w', ImageIO.read(new File("res/tiles/gra.png")),
-                              '~', ImageIO.read(new File("res/tiles/wat.png")),
-                              '.', ImageIO.read(new File("res/tiles/dir.png")));
+            load("res/test.map"); // testing
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    List<List<Character>> map;
-    int rows, cols;
-
-    public TileMap(String file) throws IOException {
-        load(file);
     }
 
     public void load(String file) throws IOException {
@@ -31,15 +24,23 @@ public class TileMap {
         BufferedReader in = new BufferedReader(new FileReader(file));
         String line;
         while ((line = in.readLine()) != null) {
-            List<Character> row = new ArrayList<>();
+            java.util.List<Tile> row = new ArrayList<>();
             for (char c : line.toCharArray()) {
-                row.add(c);
+                row.add(TileFactory.newTile(c));
             }
             map.add(row);
         }
         rows = map.size();
         cols = map.get(0).size();
         in.close();
+    }
+
+    public int getWidth() {
+        return cols * Tile.WIDTH;
+    }
+
+    public int getHeight() {
+        return rows * Tile.HEIGHT;
     }
 
     public int getRows() {
@@ -50,7 +51,17 @@ public class TileMap {
         return cols;
     }
 
-    public BufferedImage getImage(int row, int col) {
-        return charDict.get(map.get(row).get(col));
+    public Tile getTile(int row, int col) {
+        return map.get(row).get(col);
     }
+
+    public void update(Graphics2D g2) {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                g2.drawImage(map.get(i).get(j).getImage(), scene.translateX(j * Tile.WIDTH),
+                        scene.translateY(i * Tile.HEIGHT), null);
+            }
+        }
+    }
+
 }
