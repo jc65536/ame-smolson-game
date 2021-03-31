@@ -15,26 +15,30 @@ public class GameScreen extends Screen {
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
-            game.draw((Graphics2D) g);
+            game.draw((Graphics2D) g, getWidth(), getHeight());
         }
 
     };
 
     private JPanel uiContainer = new JPanel();
     private JLabel title = new JLabel("Game Screen");
-    private JButton testButton = new JButton("testButton"); // TESTING
+    private JButton testButton = new JButton("testButton");
 
-    private GameDriver gameDriver;
+    private GameDriver gameDriver = new GameDriver(canvas);
     private Game game;
 
     /**
-     * Builds the basic component structure of the screen. Does not actually start the game.
+     * Builds the basic component structure of the screen. Does not actually start
+     * the game.
      */
     public GameScreen() {
         setLayout(new BorderLayout());
         add(layeredPane);
-        canvas.setBackground(new Color(0xccffcc)); // TESTING
+
+        canvas.setBackground(new Color(0xccffcc));
+        canvas.setVisible(false);
         layeredPane.add(canvas, Integer.valueOf(0));
+
         uiContainer.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.anchor = GridBagConstraints.FIRST_LINE_START;
@@ -65,12 +69,11 @@ public class GameScreen extends Screen {
 
         });
 
-        gameDriver = new GameDriver(this, canvas);
         testButton.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                Main.switchScreen(Main.titleScreen);
+                Main.switchScreen(Main.TITLE_SCREEN);
             }
 
         });

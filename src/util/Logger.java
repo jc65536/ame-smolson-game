@@ -17,15 +17,20 @@ public class Logger {
         }
     }
 
-    public static void log(String message) {
-        message = String.format("[Timestamp: %s] [Thread: %s] %s\n", dateFormat.format(new Date()), Thread.currentThread().getName(), message);
-        System.out.print(message);
+    public static void log(Object message) {
+        message = String.format("[Timestamp: %s] [Thread: %s]\n%s\n--", dateFormat.format(new Date()), Thread.currentThread().getName(), message);
+        System.out.println(message);
         try {
-            fileWriter.write(message);
+            fileWriter.write(message.toString());
+            fileWriter.newLine();
             fileWriter.flush();
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static void logf(String message, Object... args) {
+        log(String.format(message, args));
     }
 
 }

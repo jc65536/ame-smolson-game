@@ -1,18 +1,19 @@
 package ui;
 
 import javax.swing.*;
-import java.awt.*;
 
 public abstract class Screen extends JPanel {
 
     /**
-     * Called by Main upon switching to screen
+     * Called upon switching to the screen.
      */
-    public void load() {}
+    public void load() {
+    }
 
     /**
-     * Called by Main upon closing the screen
+     * Called upon switching from the screen.
      */
-    public void close() {}
-    
+    public void close() {
+    }
+
 }

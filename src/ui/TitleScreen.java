@@ -8,7 +8,7 @@ import java.awt.event.*;
 import main.*;
 
 public class TitleScreen extends Screen {
-    
+
     private JLabel title = new JLabel("Smolson Valley");
     private JButton testButton = new JButton("testButton");
 
@@ -21,7 +21,7 @@ public class TitleScreen extends Screen {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                Main.switchScreen(Main.gameScreen);
+                Main.switchScreen(Main.GAME_SCREEN);
             }
 
         });

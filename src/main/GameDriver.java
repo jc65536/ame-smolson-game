@@ -2,10 +2,6 @@ package main;
 
 import javax.swing.*;
 
-import java.awt.event.ActionEvent;
-import java.util.*;
-
-import ui.*;
 import util.*;
 
 /**
@@ -15,16 +11,15 @@ public class GameDriver {
 
     private static final int MS = 1000000;
     private static final int TICK_DURATION = 16 * MS;
-    private volatile boolean running = true; // volatile bc we're reading/writing it from different threads
+    private volatile boolean running = true; // volatile because we're reading/writing it from different threads
 
-    private SwingWorker loadingWorker;
+    private SwingWorker<Void, Void> loader;
     private Thread gameThread;
 
-    private GameScreen screen;
     private JPanel canvas;
     private Game game;
 
-    private Runnable driverLoop = new Runnable() {
+    private Runnable driver = new Runnable() {
 
         @Override
         public void run() {
@@ -41,46 +36,32 @@ public class GameDriver {
                     timePassed -= TICK_DURATION;
                 }
             }
+            Logger.log("Driver loop ended");
         }
 
     };
 
-    public GameDriver(GameScreen screen, JPanel canvas) {
-        this.screen = screen;
+    public GameDriver(JPanel canvas) {
         this.canvas = canvas;
-
-        InputMap im = screen.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-        ActionMap am = screen.getActionMap();
-        im.put(KeyStroke.getKeyStroke("pressed UP"), "inc");
-        am.put("inc", new AbstractAction() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                game.increment();
-            }
-
-        });
     }
 
     /**
      * Initializes the game in the background and starts the game thread
-     * @return the new game state (which may not be fully loaded)
+     * 
+     * @return the new Game (which may not be loaded)
      */
     public Game start() {
         game = new Game();
 
-        loadingWorker = new SwingWorker<Void, Void>() {
+        loader = new SwingWorker<>() {
 
-            int r = (int) (Math.random() * 1000);
             boolean doneLoading = false;
 
             @Override
             protected Void doInBackground() {
-                Logger.log("Starting to load game " + r);
-                // TODO: load everything into game
-                Scanner s = new Scanner(System.in);
-                game.testingInt = s.nextInt();
-                Logger.log("Done loading game " + r);
+                Logger.log("Starting to load game");
+                game.load();
+                Logger.log("Done loading game");
                 doneLoading = true;
                 return null;
             }
@@ -89,26 +70,29 @@ public class GameDriver {
             protected void done() {
                 if (doneLoading) {
                     running = true;
-                    gameThread = new Thread(driverLoop);
+                    gameThread = new Thread(driver);
+                    gameThread.setName("GameThread");
                     gameThread.start();
-                    Logger.log("Game thread started " + r);
+                    canvas.setVisible(true);
+                    Logger.log("Game thread started");
                 } else {
-                    Logger.log("Game load cancelled " + r);
+                    Logger.log("Game loading cancelled");
                 }
             }
 
         };
 
-        loadingWorker.execute();
+        loader.execute();
 
         return game;
     }
 
     public void close() {
-        // TODO: release all resources and close the thread
-        loadingWorker.cancel(true);
+        canvas.setVisible(false);
+        loader.cancel(true);
         running = false;
         game = null;
+        System.gc();
     }
 
 }
