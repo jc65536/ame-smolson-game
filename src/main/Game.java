@@ -19,7 +19,7 @@ public class Game {
      * Loads the game.
      */
     public void load() {
-        trackingEntity = new Player();
+        trackingEntity = new Player(this);
         tileMap = new TileMap("res/test.map");
         entities.add(trackingEntity);
     }
@@ -63,6 +63,16 @@ public class Game {
         for (Entity e : entities) {
             e.draw(g, -cameraOffsetX, -cameraOffsetY);
         }
+    }
+
+    // TODO: TESTING
+    public TileMap getTileMap() {
+        return tileMap;
+    }
+
+    // TODO: TESTING
+    public void loadNewMap(String filename) {
+        tileMap = new TileMap(filename);
     }
 
 }

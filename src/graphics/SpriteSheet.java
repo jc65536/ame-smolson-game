@@ -24,6 +24,14 @@ public class SpriteSheet {
         return sheet.getSubimage(col * spriteWidth, row * spriteHeight, spriteWidth, spriteHeight);
     }
 
+    /**
+     * Gets an array of images from the spritesheet. Useful for creating animations.
+     * 
+     * @param coordinates a 2d array where each row is in the form of {row, col}
+     * @return an array of BufferedImages
+     * @throws InputMismatchException if the 2d array does not have exactly 2
+     *                                columns
+     */
     public BufferedImage[] getImages(int[][] coordinates) throws InputMismatchException {
         if (coordinates[0].length != 2)
             throw new InputMismatchException();
@@ -38,7 +46,7 @@ public class SpriteSheet {
         BufferedImage[] r = new BufferedImage[rows * cols];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                r[i * rows + j] = getImage(i, j);
+                r[i * cols + j] = getImage(i, j);
             }
         }
         return r;

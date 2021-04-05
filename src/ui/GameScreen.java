@@ -35,7 +35,7 @@ public class GameScreen extends Screen {
         setLayout(new BorderLayout());
         add(layeredPane);
 
-        canvas.setBackground(new Color(0xccffcc));
+        canvas.setBackground(new Color(0x223333));
         canvas.setVisible(false);
         layeredPane.add(canvas, Integer.valueOf(0));
 

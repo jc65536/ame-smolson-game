@@ -17,6 +17,7 @@ public class TileFactory {
             imageMap.put((int) 'w', tileImages.getImage(0, 1));
             imageMap.put((int) '~', tileImages.getImage(0, 2));
             imageMap.put((int) 'P', tileImages.getImage(1, 1));
+            imageMap.put((int) 'Q', tileImages.getImage(1, 3));
         } catch (Exception e) {
             Logger.log("Couldn't load tile images");
             e.printStackTrace();

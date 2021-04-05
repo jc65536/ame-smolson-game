@@ -9,7 +9,7 @@ import util.*;
 public class TileMap {
 
     private java.util.List<java.util.List<Tile>> tiles;
-    private int mapWidth, mapHeight;
+    private int mapWidth, mapHeight, rows, columns;
 
     public TileMap(String mapFile) {
         tiles = new ArrayList<>();
@@ -23,12 +23,22 @@ public class TileMap {
                 tiles.add(row);
                 row = new ArrayList<>();
             }
-            mapHeight = Tile.HEIGHT * tiles.size();
-            mapWidth = Tile.WIDTH * tiles.get(0).size();
+            rows = tiles.size();
+            columns = tiles.get(0).size();
+            mapHeight = Tile.HEIGHT * rows;
+            mapWidth = Tile.WIDTH * columns;
         } catch (Exception e) {
             Logger.log("Failed to open create map from file " + mapFile);
             e.printStackTrace();
         }
+    }
+
+    public int getRows() {
+        return rows;
+    }
+
+    public int getColumns() {
+        return columns;
     }
 
     public int getMapWidth() {
@@ -61,6 +71,11 @@ public class TileMap {
                         Tile.HEIGHT, null);
             }
         }
+    }
+
+    // TODO: TESTING
+    public Tile getTile(int r, int c) {
+        return tiles.get(r).get(c);
     }
 
 }
