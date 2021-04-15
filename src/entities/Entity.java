@@ -1,16 +1,22 @@
 package entities;
 
 import java.awt.*;
+import game.*;
 
 /**
  * Any game object that moves relative to the tile map.
  */
 public abstract class Entity {
 
+    // TODO: these probably shouldn't all be public
     public double x, y, z; // (x, y) is the center of the shadow
     public Rectangle shadow;
     public int zHeight;
-    public double vx, vy, vz;
+    public Game gameContext;
+
+    public Entity(Game gameContext) {
+        this.gameContext = gameContext;
+    }
 
     /**
      * Draws the entity.

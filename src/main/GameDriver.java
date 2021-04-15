@@ -3,6 +3,7 @@ package main;
 import javax.swing.*;
 
 import util.*;
+import game.*;
 
 /**
  * A driver class to separate the threading stuff from class Game

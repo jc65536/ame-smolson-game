@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 import main.*;
+import game.*;
 
 public class GameScreen extends Screen {
 

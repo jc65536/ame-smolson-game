@@ -37,7 +37,7 @@ public class TileMap {
         return rows;
     }
 
-    public int getColumns() {
+    public int getCols() {
         return columns;
     }
 

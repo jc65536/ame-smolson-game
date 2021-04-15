@@ -1,4 +1,4 @@
-package main;
+package game;
 
 import java.util.*;
 import java.awt.*;
@@ -22,6 +22,7 @@ public class Game {
         trackingEntity = new Player(this);
         tileMap = new TileMap("res/test.map");
         entities.add(trackingEntity);
+        entities.add(new TestBumper(this));
     }
 
     /**
@@ -36,7 +37,9 @@ public class Game {
     /**
      * Updates the graphics.
      * 
-     * @param g Graphics2D object to draw with
+     * @param g            Graphics2D object to draw with
+     * @param screenWidth  screen width
+     * @param screenHeight screen height
      */
     public void draw(Graphics2D g, int screenWidth, int screenHeight) {
         /*
@@ -60,6 +63,13 @@ public class Game {
         }
 
         tileMap.draw(g, -cameraOffsetX, -cameraOffsetY, screenWidth, screenHeight);
+        Collections.sort(entities, (Entity o1, Entity o2) -> {
+            if (o1.y < o2.y)
+                return -1;
+            else if (o1.y > o2.y)
+                return 1;
+            return 0;
+        });
         for (Entity e : entities) {
             e.draw(g, -cameraOffsetX, -cameraOffsetY);
         }
@@ -68,6 +78,11 @@ public class Game {
     // TODO: TESTING
     public TileMap getTileMap() {
         return tileMap;
+    }
+
+    // TODO: TESTING
+    public java.util.List<Entity> getEntities() {
+        return entities;
     }
 
     // TODO: TESTING

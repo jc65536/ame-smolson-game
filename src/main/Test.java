@@ -1,9 +1,5 @@
 package main;
 
-import java.util.*;
-
-import util.*;
-
 public class Test {
 
     public static void pf(String str, Object... args) {

@@ -1,12 +1,6 @@
 package util;
 
-import java.util.*;
-
 public class Direction {
-
-    enum enumDirs {
-
-    }
 
     // Enumerated directions
     public static final Direction E = new Direction(0, "RIGHT");
@@ -38,7 +32,7 @@ public class Direction {
 
     /**
      * Initializes a new Direction. The new Direction represents a unit vector in
-     * the direction of &lt;x, y&gt;.
+     * the direction of (x, y).
      * 
      * @param x x component
      * @param y y component
