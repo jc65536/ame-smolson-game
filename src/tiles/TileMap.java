@@ -16,12 +16,32 @@ public class TileMap {
         try (BufferedReader r = new BufferedReader(new FileReader(mapFile))) {
             String line;
             java.util.List<Tile> row = new ArrayList<>();
+            java.util.List<Tile> portals = new ArrayList<>();
+            int portalIt = 0;
+            int section = 0;
             while ((line = r.readLine()) != null) {
-                for (char c : line.toCharArray()) {
-                    row.add(TileFactory.newTile((int) c));
+                if (line.length() == 0) {
+                    section++;
+                    continue;
                 }
-                tiles.add(row);
-                row = new ArrayList<>();
+                switch (section) {
+                case 0:
+                    for (char c : line.toCharArray()) {
+                        Tile t = TileFactory.newTile(c);
+                        if (t.id == 'P')
+                            portals.add(t);
+                        row.add(t);
+                    }
+                    tiles.add(row);
+                    row = new ArrayList<>();
+                    break;
+                case 1:
+                    if (portalIt < portals.size()) {
+                        portals.get(portalIt).destination = line;
+                        portalIt++;
+                    }
+                    break;
+                }
             }
             rows = tiles.size();
             columns = tiles.get(0).size();
@@ -49,6 +69,18 @@ public class TileMap {
         return mapHeight;
     }
 
+    public void update() {
+        int firstRow = Math.max(-originY / Tile.HEIGHT, 0);
+        int lastRow = firstRow + (int) Math.ceil((double) screenHeight / Tile.HEIGHT);
+        int firstCol = Math.max(-originX / Tile.HEIGHT, 0);
+        int lastCol = firstCol + (int) Math.ceil((double) screenWidth / Tile.WIDTH);
+        for (int i = firstRow; i < tiles.size() && i <= lastRow; i++) {
+            for (int j = firstCol; j < tiles.get(i).size() && j <= lastCol; j++) {
+                tiles.get(i).get(j).image.update();
+            }
+        }
+    }
+
     /**
      * Draws the tile map.
      * 
@@ -67,7 +99,7 @@ public class TileMap {
         int lastCol = firstCol + (int) Math.ceil((double) screenWidth / Tile.WIDTH);
         for (int i = firstRow; i < tiles.size() && i <= lastRow; i++) {
             for (int j = firstCol; j < tiles.get(i).size() && j <= lastCol; j++) {
-                g.drawImage(tiles.get(i).get(j).image, j * Tile.WIDTH + originX, i * Tile.HEIGHT + originY, Tile.WIDTH,
+                g.drawImage(tiles.get(i).get(j).image.getImage(), j * Tile.WIDTH + originX, i * Tile.HEIGHT + originY, Tile.WIDTH,
                         Tile.HEIGHT, null);
             }
         }

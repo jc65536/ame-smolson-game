@@ -8,7 +8,8 @@ public class Tile {
     public static final int HEIGHT = 32;
 
     public int id;
-    public BufferedImage image;
+    public Animation image;
     public boolean passable = true;
+    public String destination;
 
 }

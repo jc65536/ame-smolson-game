@@ -188,12 +188,8 @@ public class Player extends Entity {
                 Tile t = map.getTile(r, c);
                 switch (t.id) {
                 case 'P':
-                    gameContext.loadNewMap("res/test_cave.map");
-                    setPos(100, 100);
-                    break;
-                case 'Q':
-                    gameContext.loadNewMap("res/test.map");
-                    setPos(100, 150);
+                    gameContext.loadNewMap("res/" + t.destination);
+                    setPos(300, 150);
                     break;
                 }
             }
