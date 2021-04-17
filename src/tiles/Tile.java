@@ -2,6 +2,8 @@ package tiles;
 
 import java.awt.image.*;
 
+import graphics.*;
+
 public class Tile {
 
     public static final int WIDTH = 32;

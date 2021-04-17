@@ -69,18 +69,6 @@ public class TileMap {
         return mapHeight;
     }
 
-    public void update() {
-        int firstRow = Math.max(-originY / Tile.HEIGHT, 0);
-        int lastRow = firstRow + (int) Math.ceil((double) screenHeight / Tile.HEIGHT);
-        int firstCol = Math.max(-originX / Tile.HEIGHT, 0);
-        int lastCol = firstCol + (int) Math.ceil((double) screenWidth / Tile.WIDTH);
-        for (int i = firstRow; i < tiles.size() && i <= lastRow; i++) {
-            for (int j = firstCol; j < tiles.get(i).size() && j <= lastCol; j++) {
-                tiles.get(i).get(j).image.update();
-            }
-        }
-    }
-
     /**
      * Draws the tile map.
      * 
@@ -99,6 +87,7 @@ public class TileMap {
         int lastCol = firstCol + (int) Math.ceil((double) screenWidth / Tile.WIDTH);
         for (int i = firstRow; i < tiles.size() && i <= lastRow; i++) {
             for (int j = firstCol; j < tiles.get(i).size() && j <= lastCol; j++) {
+                tiles.get(i).get(j).image.update();
                 g.drawImage(tiles.get(i).get(j).image.getImage(), j * Tile.WIDTH + originX, i * Tile.HEIGHT + originY, Tile.WIDTH,
                         Tile.HEIGHT, null);
             }
