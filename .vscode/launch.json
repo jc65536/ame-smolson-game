@@ -9,14 +9,14 @@
             "name": "Launch Main",
             "request": "launch",
             "mainClass": "main.Main",
-            "projectName": "smolson-valley_a5f251d8"
+            "projectName": "smolson-valley_d1022151"
         },
         {
             "type": "java",
             "name": "Launch Test",
             "request": "launch",
             "mainClass": "main.Test",
-            "projectName": "smolson-valley_a5f251d8"
+            "projectName": "smolson-valley_d1022151"
         }
     ]
 }
